@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block title %}Туристическое агентство{% endblock %}
+{% block content %}
+    <!-- Карусель с турами -->
+    <div id="tourCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <!-- Слайд 1: Токио -->
+            <div class="carousel-item active">
+                <img src="{{ url_for('static', filename='images/tokyo.jpg') }}" class="d-block w-100" alt="Тур в Токио" style="height: 600px; object-fit: cover;">
+                <div class="carousel-caption">
+                    <h1 class="welcome-title">Тур в Токио</h1>
+                    <p>Исследуйте культуру и технологии Японии!</p>
+                    <div class="hero-buttons">
+                        <a href="{{ url_for('tour_detail', id=2) }}" class="btn btn-primary">Подробнее</a>
+                        {% if not current_user.is_authenticated %}
+                            <button type="button" class="btn btn-outline-primary mx-2" data-bs-toggle="modal" data-bs-target="#loginModal">Войти</button>
+                            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#registerModal">Регистрация</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <!-- Слайд 2: Париж -->
+            <div class="carousel-item">
+                <img src="{{ url_for('static', filename='images/paris.jpg') }}" class="d-block w-100" alt="Тур в Париж" style="height: 600px; object-fit: cover;">
+                <div class="carousel-caption">
+                    <h1 class="welcome-title">Тур в Париж</h1>
+                    <p>Романтика и культура Франции ждут вас!</p>
+                    <div class="hero-buttons">
+                        <a href="{{ url_for('tour_detail', id=1) }}" class="btn btn-primary">Подробнее</a>
+                        {% if not current_user.is_authenticated %}
+                            <button type="button" class="btn btn-outline-primary mx-2" data-bs-toggle="modal" data-bs-target="#loginModal">Войти</button>
+                            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#registerModal">Регистрация</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <!-- Слайд 3: Рим -->
+            <div class="carousel-item">
+                <img src="{{ url_for('static', filename='images/rome.jpg') }}" class="d-block w-100" alt="Тур в Рим" style="height: 600px; object-fit: cover;">
+                <div class="carousel-caption">
+                    <h1 class="welcome-title">Тур в Рим</h1>
+                    <p>История и красота Италии в одном туре!</p>
+                    <div class="hero-buttons">
+                        <a href="{{ url_for('tour_detail', id=3) }}" class="btn btn-primary">Подробнее</a>
+                        {% if not current_user.is_authenticated %}
+                            <button type="button" class="btn btn-outline-primary mx-2" data-bs-toggle="modal" data-bs-target="#loginModal">Войти</button>
+                            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#registerModal">Регистрация</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#tourCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#tourCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <!-- Модальные окна -->
+    {% if not current_user.is_authenticated %}
+        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="loginModalLabel">Вход</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" action="{{ url_for('login') }}">
+                            {{ login_form.hidden_tag() }}
+                            <div class="mb-3">
+                                {{ login_form.username.label }} {{ login_form.username(class="form-control") }}
+                            </div>
+                            <div class="mb-3">
+                                {{ login_form.password.label }} {{ login_form.password(class="form-control") }}
+                            </div>
+                            {{ login_form.submit(class="btn btn-primary") }}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="registerModalLabel">Регистрация</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" action="{{ url_for('register') }}">
+                            {{ register_form.hidden_tag() }}
+                            <div class="mb-3">
+                                {{ register_form.username.label }} {{ register_form.username(class="form-control") }}
+                            </div>
+                            <div class="mb-3">
+                                {{ register_form.password.label }} {{ register_form.password(class="form-control") }}
+                            </div>
+                            {{ register_form.submit(class="btn btn-primary") }}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

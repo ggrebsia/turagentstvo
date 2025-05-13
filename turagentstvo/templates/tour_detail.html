@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ tour.title }}</h1>
+<div class="card tour-card">
+    <img src="{{ url_for('static', filename=tour.image_url) if tour.image_url else 'https://via.placeholder.com/1200x600?text=' + tour.title }}" class="tour-image" alt="{{ tour.title }}">
+    <div class="card-body">
+        <p class="card-text">{{ tour.description }}</p>
+        <p><i class="fas fa-globe"></i> <strong>Страна:</strong> {{ tour.country }}</p>
+        <p><i class="fas fa-dollar-sign"></i> <strong>Цена:</strong> {{ tour.price }} $</p>
+        <p><i class="fas fa-clock"></i> <strong>Длительность:</strong> {{ tour.duration }} дней</p>
+        {% if current_user.is_authenticated %}
+            <form method="POST" action="{{ url_for('tour_detail', id=tour.id) }}">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">
+                    {{ form.date.label }} {{ form.date(class="form-control") }}
+                    {% for error in form.date.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {{ form.submit(class="btn btn-primary") }}
+            </form>
+        {% else %}
+            <p>Войдите, чтобы забронировать тур. <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Войти</a></p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

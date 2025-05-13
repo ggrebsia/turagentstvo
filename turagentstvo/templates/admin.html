@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Админ-панель</h1>
+<h2>Добавить тур</h2>
+<form method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">
+        {{ form.title.label }} {{ form.title(class="form-control") }}
+        {% for error in form.title.errors %}
+            <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+    </div>
+    <div class="mb-3">
+        {{ form.description.label }} {{ form.description(class="form-control") }}
+        {% for error in form.description.errors %}
+            <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+    </div>
+    <div class="mb-3">
+        {{ form.price.label }} {{ form.price(class="form-control") }}
+        {% for error in form.price.errors %}
+            <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+    </div>
+    <div class="mb-3">
+        {{ form.duration.label }} {{ form.duration(class="form-control") }}
+        {% for error in form.duration.errors %}
+            <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+    </div>
+    <div class="mb-3">
+        {{ form.country.label }} {{ form.country(class="form-select") }}
+        {% for error in form.country.errors %}
+            <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+    </div>
+    <div class="mb-3">
+        {{ form.image.label }} {{ form.image(class="form-control") }}
+        {% for error in form.image.errors %}
+            <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+    </div>
+    {{ form.submit(class="btn btn-primary") }}
+</form>
+
+<h2>Все туры</h2>
+<ul>
+    {% for tour in tours %}
+        <li>{{ tour.title }} ({{ tour.country }}) - {{ tour.price }} $ ({{ tour.duration }} дней)
+            <a href="{{ url_for('edit_tour', id=tour.id) }}" class="btn btn-warning btn-sm">Редактировать</a>
+        </li>
+    {% endfor %}
+</ul>
+
+<h2>Черновики</h2>
+<ul>
+    {% for draft in drafts %}
+        <li>{{ draft.title }} ({{ draft.country }}) - {{ draft.price }} $ ({{ draft.duration }} дней)
+            <a href="{{ url_for('approve_tour', id=draft.id) }}" class="btn btn-success btn-sm">Утвердить</a>
+            <a href="{{ url_for('edit_tour', id=draft.id) }}" class="btn btn-warning btn-sm">Редактировать</a>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

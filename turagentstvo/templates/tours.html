@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Наши туры</h1>
+    {% if current_user.is_authenticated %}
+        <a href="{{ url_for('create_tour') }}" class="btn btn-success mb-3">Добавить свой тур</a>
+    {% endif %}
+<div class="row">
+    {% for tour in approved_tours %}
+        <div class="col-md-4">
+            <div class="tour-card card">
+                <img src="{{ url_for('static', filename=tour.image_url) if tour.image_url else 'https://via.placeholder.com/400x200?text=' + tour.title }}" class="card-img-top" alt="{{ tour.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ tour.title }}</h5>
+                    <p class="card-text">{{ tour.description }}</p>
+                    <p><i class="fas fa-globe"></i> <strong>Страна:</strong> {{ tour.country }}</p>
+                    <p><i class="fas fa-dollar-sign"></i> <strong>Цена:</strong> {{ tour.price }} $</p>
+                    <p><i class="fas fa-clock"></i> <strong>Длительность:</strong> {{ tour.duration }} дней</p>
+                    <a href="{{ url_for('tour_detail', id=tour.id) }}" class="btn btn-primary">Подробнее</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% if current_user.is_authenticated and user_drafts %}
+    <h2>Ваши черновики</h2>
+    <div class="row">
+        {% for draft in user_drafts %}
+            <div class="col-md-4">
+                <div class="tour-card card">
+                    <img src="{{ url_for('static', filename=draft.image_url) if draft.image_url else 'https://via.placeholder.com/400x200?text=' + draft.title }}" class="card-img-top" alt="{{ draft.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ draft.title }} (Черновик)</h5>
+                        <p class="card-text">{{ draft.description }}</p>
+                        <p><i class="fas fa-globe"></i> <strong>Страна:</strong> {{ draft.country }}</p>
+                        <p><i class="fas fa-dollar-sign"></i> <strong>Цена:</strong> {{ draft.price }} $</p>
+                        <p><i class="fas fa-clock"></i> <strong>Длительность:</strong> {{ draft.duration }} дней</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Профиль: {{ username }}</h1>
+    
+    <h2>Ваши забронированные туры</h2>
+    {% if booked_tours %}
+        <div class="row">
+            {% for booking, tour in booked_tours %}
+                <div class="col-md-4">
+                    <div class="card mb-4 tour-card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ tour.title }}</h5>
+                            <p class="card-text">{{ tour.description[:100] }}...</p>
+                            <p><strong>Страна:</strong> {{ tour.country }}</p>
+                            <p><strong>Цена:</strong> {{ tour.price }} $</p>
+                            <p><strong>Продолжительность:</strong> {{ tour.duration }} дней</p>
+                            <a href="{{ url_for('tour_detail', id=tour.id) }}" class="btn btn-primary">Подробнее</a>
+                            <form method="POST" action="{{ url_for('delete_booking', id=booking.id) }}" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Вы уверены, что хотите удалить это бронирование?');">Удалить</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>У вас нет забронированных туров.</p>
+    {% endif %}
+{% endblock %}
